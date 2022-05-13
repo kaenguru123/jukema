@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using JuKeMa.Model;
+using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -29,48 +30,79 @@ namespace JuKeMa.Data
         {
             Connection.Close();
         }
+
+        private bool tryIndex(MySqlDataReader data, string key)
+        {
+            try
+            {
+                var tryIndex = data[key];
+                return true;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return false;
+            }
+        }
+
+        private Employee getValidEmployee(MySqlDataReader data)
+        {   
+            var validEmployee = new Employee();
+
+            validEmployee.NTUser = tryIndex(data, "NTUser") ? data["NTUser"].ToString() : default(string);
+            validEmployee.Name = tryIndex(data, "Name") ? data["Name"].ToString() : default(string);
+            validEmployee.Address = tryIndex(data, "Address") ? data["Address"].ToString() : default(string);
+            validEmployee.HireDate = tryIndex(data, "HireDate") ? DateTime.TryParse(data["HireDate"].ToString(), out DateTime hiredate) ? hiredate : default(DateTime) : default(DateTime);
+            validEmployee.Birthday = tryIndex(data, "Birthday") ? DateTime.TryParse(data["Birthday"].ToString(), out DateTime birthday) ? birthday : default(DateTime) : default(DateTime);
+            validEmployee.Department = tryIndex(data, "DepartmentName") ? data["DepartmentName"].ToString() : default(string);
+
+            return validEmployee;
+        }
+
+        private List<Employee> initializeList(MySqlDataReader data)
+        {
+            var list = new List<Employee>();
+            while (data.Read())
+            {
+                list.Add(getValidEmployee(data));
+            }
+            return list;
+        }
+
         private string executeQueryToGetJson(string query)
         {
             command.CommandText = query;
             var data = command.ExecuteReader();
-            var dataTable = new DataTable();
-            dataTable.Load(data);
-            return JsonConvert.SerializeObject(dataTable);
-        }
-
-        private string[] executeQueryToGetList(string query)
-        {
-            command.CommandText = query;
-            var data = command.ExecuteReader();
-            var dataTable = new DataTable();
-            dataTable.Load(data);
-            var str = JsonConvert.SerializeObject(dataTable);
-            return JsonConvert.DeserializeObject<string[]>(str);
+            var employees = new List<Employee>();
+            employees = initializeList(data);
+            return JsonConvert.SerializeObject(employees, Formatting.Indented, new JsonSerializerSettings
+            {
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            });
         }
 
         public string getAllEmployee()
         {
             string query = "SELECT " +
-                                "mitarbeiter.NTUser, mitarbeiter.Name, mitarbeiter.Anschrift, mitarbeiter.Einstellungsdatum, mitarbeiter.Geburtstag, abteilung.Name " +
+                                "employee.NTUser, employee.Name, employee.Address, employee.HireDate, employee.Birthday, deparment.Name as DepartmentName " +
                                 "FROM " +
-                                "`mitarbeiter` " +
+                                "`employee` " +
                                 "JOIN " +
-                                "abteilung " +
+                                "department " +
                                 "WHERE " +
-                                "mitarbeiter.Abteilung = abteilung.ID;";
+                                "employee.Department = department.ID;";
             return executeQueryToGetJson(query);
         }
 
         public string getEmployeeById(int Id)
         {
             string query = "SELECT " +
-                                "mitarbeiter.NTUser, mitarbeiter.Name, mitarbeiter.Anschrift, mitarbeiter.Einstellungsdatum, mitarbeiter.Geburtstag, abteilung.Name " +
+                                "employee.NTUser, employee.Name, employee.Address, employee.HireDate, employee.Birthday, department.Name as DepartmentName " +
                                 "FROM " +
-                                "`mitarbeiter` " +
+                                "`employee` " +
                                 "JOIN " +
-                                "abteilung " +
+                                "department " +
                                 "WHERE " +
-                                $"mitarbeiter.Abteilung = abteilung.ID WHERE mitarbeiter.NTUser = {Id};";
+                                $"employee.Department = department.ID WHERE employee.NTUser = {Id};";
 
             return executeQueryToGetJson(query);
         }
@@ -78,31 +110,35 @@ namespace JuKeMa.Data
         public string getEmployeeByArray(string[] filter)
         {
             string query = "SELECT " +
-                                    "mitarbeiter.NTUser, mitarbeiter.Name, mitarbeiter.Anschrift, mitarbeiter.Einstellungsdatum, mitarbeiter.Geburtstag, abteilung.Name " +
+                                    "employee.NTUser, employee.Name, employee.Address, employee.HireDate, employee.Birthday, department.Name as DepartmentName " +
                                     "FROM " +
-                                    "`mitarbeiter` " +
+                                    "`employee` " +
                                     "JOIN " +
-                                    "abteilung " +
+                                    "department " +
                                     "WHERE " +
-                                    "mitarbeiter.Abteilung = abteilung.ID " +
+                                    "employee.Department = department.ID " +
                                     "WHERE ";
 
             for (int i = 0; i < filter.Length-1; i++)
             {
-                    query += $"mitarbeiter.NTUser = {filter[i]} OR ";
+                    query += $"employee.NTUser = {filter[i]} OR ";
             }
-            query += $"mitarbeiter.NTUser = {filter[filter.Length-1]};";
+            query += $"employee.NTUser = {filter[filter.Length-1]};";
 
             return executeQueryToGetJson(query);
         }
 
-        public string[] getDataForCheckList()
+        public string getDataForCheckList()
         {
             string query = "SELECT " +
-                            "mitarbeiter.NTUser, mitarbeiter.Name " +
+                            "employee.NTUser, employee.Name, department.Name as DepartmentName " +
                             "FROM " +
-                            "mitarbeiter;";
-            return executeQueryToGetList(query);
+                            "employee " +
+                            "JOIN " +
+                            "department " +
+                            "WHERE " +
+                            "employee.Department = department.ID;";
+            return executeQueryToGetJson(query);
         }
     }
 }
