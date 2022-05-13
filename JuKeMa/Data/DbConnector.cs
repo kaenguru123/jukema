@@ -51,7 +51,7 @@ namespace JuKeMa.Data
             validEmployee.NTUser = tryIndex(data, "NTUser") ? data["NTUser"].ToString() : default(string);
             validEmployee.Name = tryIndex(data, "Name") ? data["Name"].ToString() : default(string);
             validEmployee.Address = tryIndex(data, "Address") ? data["Address"].ToString() : default(string);
-            validEmployee.HireDate = tryIndex(data, "HireDate") ? DateTime.TryParse(data["HireDate"].ToString(), out DateTime hiredate) ? hiredate : default(DateTime) : default(DateTime);
+            validEmployee.HireDate = tryIndex(data, "HireDate") ? DateTime.TryParse(data["HireDate"].ToString(), out DateTime hiredat) ? hiredat : default(DateTime) : default(DateTime);
             validEmployee.Birthday = tryIndex(data, "Birthday") ? DateTime.TryParse(data["Birthday"].ToString(), out DateTime birthday) ? birthday : default(DateTime) : default(DateTime);
             validEmployee.Department = tryIndex(data, "DepartmentName") ? data["DepartmentName"].ToString() : default(string);
 
