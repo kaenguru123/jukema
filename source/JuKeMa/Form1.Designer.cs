@@ -31,7 +31,7 @@ namespace JuKeMa
         {
             this.SaveJson = new System.Windows.Forms.Button();
             this.JsonView = new System.Windows.Forms.TextBox();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.ListBox = new System.Windows.Forms.CheckedListBox();
             this.Logo = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.SuspendLayout();
@@ -58,20 +58,20 @@ namespace JuKeMa
             this.JsonView.Size = new System.Drawing.Size(950, 280);
             this.JsonView.TabIndex = 2;
             // 
-            // checkedListBox1
+            // ListBox
             // 
-            this.checkedListBox1.FormattingEnabled = true;
-            var employees = data.getDataForCheckList();
-            this.checkedListBox1.Items.Add("select all");
-            foreach (var employee in employees)
+            this.ListBox.FormattingEnabled = true;
+            this.employees = data.getDataForCheckList();
+            this.ListBox.Items.Add("select all");
+            foreach (var employee in this.employees)
             {
-                this.checkedListBox1.Items.Add($"{employee.Name} \t({employee.Department})");
+                this.ListBox.Items.Add($"{employee.NTUser}\t  {employee.Name}\t({employee.Department})");
             }
-            this.checkedListBox1.Location = new System.Drawing.Point(35, 33);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(426, 202);
-            this.checkedListBox1.TabIndex = 3;
-            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.ListBox_SelectedIndexChanged);
+            this.ListBox.Location = new System.Drawing.Point(35, 33);
+            this.ListBox.Name = "ListBox";
+            this.ListBox.Size = new System.Drawing.Size(426, 202);
+            this.ListBox.TabIndex = 3;
+            this.ListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ListBox_SelectedIndexChanged);
             // 
             // Logo
             // 
@@ -89,7 +89,7 @@ namespace JuKeMa
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1009, 606);
             this.Controls.Add(this.Logo);
-            this.Controls.Add(this.checkedListBox1);
+            this.Controls.Add(this.ListBox);
             this.Controls.Add(this.JsonView);
             this.Controls.Add(this.SaveJson);
             this.Name = "MainFrame";
@@ -104,7 +104,7 @@ namespace JuKeMa
 
         private System.Windows.Forms.Button SaveJson;
         private System.Windows.Forms.TextBox JsonView;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.CheckedListBox ListBox;
         private System.Windows.Forms.PictureBox Logo;
     }
 }

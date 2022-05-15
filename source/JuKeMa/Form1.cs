@@ -1,4 +1,5 @@
 ﻿using JuKeMa.Data;
+using JuKeMa.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,10 +18,15 @@ namespace JuKeMa
     public partial class MainFrame : Form
     {
         private DbConnector data { get; set; }
+        private bool[] checkedBoxes { get; set; }
+        private List<Employee> employees { get; set; }
+        private bool allSelected { get; set; }
+
         public MainFrame()
         {
             data = new DbConnector();
             InitializeComponent();
+            checkedBoxes = new bool[this.employees.Count];
         }
 
         private void SaveJson_Click(object sender, EventArgs e)
@@ -37,10 +44,57 @@ namespace JuKeMa
             Console.WriteLine(employeeJSON);
         }
 
-        private void ListBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListBox_SelectedIndexChanged(object sender, ItemCheckEventArgs e)
         {
+            this.JsonView.Clear();
+            if (ListBox.GetItemChecked(0))
+            {
+                this.allSelected = true;
+            } else {
+                this.allSelected = false;
+            }
 
+            if (this.allSelected)
+            {
+                for (int index = 0; index < this.checkedBoxes.Length; ++index)
+                {
+                    this.checkedBoxes[index] = true;
+                }
+            } else {
+                for (int cnt = 0; cnt < this.checkedBoxes.Length; ++cnt)
+                {
+                    if (ListBox.GetItemChecked(cnt))
+                    {
+                        this.checkedBoxes[cnt] = true;
+                    }
+                    else
+                    {
+                        this.checkedBoxes[cnt] = false;
+                    }
+                }
+                if (e.NewValue == CheckState.Checked)
+                {
+                    this.checkedBoxes[e.Index - 1] = true;
+                }
+            }
+
+            for (int index = 1; index < this.checkedBoxes.Length; ++index)
+            {
+                if (this.checkedBoxes[index])
+                {
+                    var ntuser = "";
+                    var checkedItem = ListBox.Items[index].ToString();
+                    for (int i = 0; checkedItem[i] != '\t'; ++i)
+                    {
+                        ntuser += checkedItem[i];
+                    }
+                    var employee = this.employees.FirstOrDefault(x => x.NTUser.Equals(ntuser));
+                    if (employee.NTUser != "")
+                    {
+                        this.JsonView.Text += data.getEmployeeById(employee.NTUser);
+                    }
+                }
+            }
         }
-
     }
 }

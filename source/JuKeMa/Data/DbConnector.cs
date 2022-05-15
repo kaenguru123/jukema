@@ -99,7 +99,8 @@ namespace JuKeMa.Data
             {
                 return (T)(object)JsonConvert.SerializeObject(employees, Formatting.Indented, new JsonSerializerSettings
                 {
-                    DefaultValueHandling = DefaultValueHandling.Ignore
+                    DefaultValueHandling = DefaultValueHandling.Ignore,
+                    StringEscapeHandling = StringEscapeHandling.EscapeNonAscii
 
                 });
             } else if (typeof(T) == typeof(List<Employee>))
@@ -118,12 +119,12 @@ namespace JuKeMa.Data
                                 "`employee` " +
                                 "JOIN " +
                                 "department " +
-                                "WHERE " +
+                                "ON " +
                                 "employee.Department = department.ID;";
             return executeQuery<string>(query);
         }
 
-        public string getEmployeeById(int Id)
+        public string getEmployeeById(string Id)
         {
             string query = "SELECT " +
                                 "employee.NTUser, employee.Name, employee.Address, employee.HireDate, employee.Birthday, department.Name as DepartmentName " +
@@ -131,8 +132,10 @@ namespace JuKeMa.Data
                                 "`employee` " +
                                 "JOIN " +
                                 "department " +
+                                "ON " +
+                                $"employee.Department = department.ID " +
                                 "WHERE " +
-                                $"employee.Department = department.ID WHERE employee.NTUser = {Id};";
+                                $"employee.NTUser = '{Id}';";
 
             return executeQuery<string>(query);
         }
@@ -145,7 +148,7 @@ namespace JuKeMa.Data
                                     "`employee` " +
                                     "JOIN " +
                                     "department " +
-                                    "WHERE " +
+                                    "ON " +
                                     "employee.Department = department.ID " +
                                     "WHERE ";
 
@@ -166,7 +169,7 @@ namespace JuKeMa.Data
                             "employee " +
                             "JOIN " +
                             "department " +
-                            "WHERE " +
+                            "ON " +
                             "employee.Department = department.ID;";
             return executeQuery<List<Employee>>(query);
         }
