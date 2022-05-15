@@ -1,0 +1,74 @@
+[
+  {
+    "NTUser": "AMS4RT",
+    "Name": "Amina Rush",
+    "Address": "Eichhoernchenweg 96\r\n75933 Diez am Natz",
+    "HireDate": "2013-03-20T00:00:00",
+    "Birthday": "1989-01-17T00:00:00",
+    "Department": "IT"
+  },
+  {
+    "NTUser": "BDE3VT",
+    "Name": "Bernhard Diener",
+    "Address": "Ahornweg 13\r\n72636 Frickenhausen",
+    "HireDate": "2017-12-03T00:00:00",
+    "Birthday": "1983-05-12T00:00:00",
+    "Department": "Vertrieb"
+  },
+  {
+    "NTUser": "CAN7BA",
+    "Name": "Cyu Agen",
+    "Address": "Fassanenstraße 5\r\n69420 Ligma",
+    "HireDate": "2012-11-11T00:00:00",
+    "Birthday": "1994-01-20T00:00:00",
+    "Department": "IT"
+  },
+  {
+    "NTUser": "JAB4TR",
+    "Name": "Juli A. n'Beque",
+    "Address": "In-adae-quat 40\r\n92763 Sug-Madig",
+    "HireDate": "2013-09-13T00:00:00",
+    "Birthday": "2000-01-01T00:00:00",
+    "Department": "Vertrieb"
+  },
+  {
+    "NTUser": "JSO2DR",
+    "Name": "Jay son D'rull",
+    "Address": "Thalk-Dir-Tee-Tume-Allee 23\r\n75933 Dietz am Natz",
+    "HireDate": "2010-08-18T00:00:00",
+    "Birthday": "1987-10-08T00:00:00",
+    "Department": "Geschäftsführungen"
+  },
+  {
+    "NTUser": "KFW4SI",
+    "Name": "Klara Fall",
+    "Address": "Beethovenstraße 19\r\n0711 Stuttgart",
+    "HireDate": "1999-06-09T00:00:00",
+    "Birthday": "1963-09-06T00:00:00",
+    "Department": "Geschäftsführungen"
+  },
+  {
+    "NTUser": "KND6FX",
+    "Name": "Ken D'rique",
+    "Address": "In der Tat 30\r\n92763 Sug-Madig",
+    "HireDate": "2015-02-18T00:00:00",
+    "Birthday": "1968-11-12T00:00:00",
+    "Department": "Personalwesen"
+  },
+  {
+    "NTUser": "MOS9TR",
+    "Name": "Mark O' Sattler",
+    "Address": "In der Zest 20\r\n92763 Sug-Madig",
+    "HireDate": "1983-05-11T00:00:00",
+    "Birthday": "1952-02-29T00:00:00",
+    "Department": "Buchhaltung"
+  },
+  {
+    "NTUser": "RCL9LW",
+    "Name": "Rainer Zufall",
+    "Address": "Christoph-Maria-Herbst-Straße 3\r\n86453 An der See",
+    "HireDate": "2019-02-06T00:00:00",
+    "Birthday": "1980-08-14T00:00:00",
+    "Department": "Personalwesen"
+  }
+]

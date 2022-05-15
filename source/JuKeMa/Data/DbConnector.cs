@@ -68,29 +68,59 @@ namespace JuKeMa.Data
             return list;
         }
 
-        private string executeQueryToGetJson(string query)
+        //private string executeQueryToGetJson(string query)
+        //{
+        //    command.CommandText = query; 
+        //    var data = command.ExecuteReader();
+        //    var employees = new List<Employee>();
+        //    employees = initializeList(data);
+        //    return JsonConvert.SerializeObject(employees, Formatting.Indented, new JsonSerializerSettings
+        //    {
+        //        DefaultValueHandling = DefaultValueHandling.Ignore
+        //    });
+        //}
+        //private List<Employee> executeQueryToGetList(string query)
+        //{
+        //    command.CommandText = query;
+        //    var data = command.ExecuteReader();
+        //    var employees = new List<Employee>();
+        //    return initializeList(data);
+        //}
+
+
+        private T executeQuery<T>(string query)
         {
             command.CommandText = query;
             var data = command.ExecuteReader();
             var employees = new List<Employee>();
             employees = initializeList(data);
-            return JsonConvert.SerializeObject(employees, Formatting.Indented, new JsonSerializerSettings
+            data.Close();
+            if (typeof(T) == typeof(string))
             {
-                DefaultValueHandling = DefaultValueHandling.Ignore
-            });
+                return (T)(object)JsonConvert.SerializeObject(employees, Formatting.Indented, new JsonSerializerSettings
+                {
+                    DefaultValueHandling = DefaultValueHandling.Ignore
+
+                });
+            } else if (typeof(T) == typeof(List<Employee>))
+            {
+                return (T)(object)employees;
+            }
+            return (T)(object)null;
         }
 
+       
         public string getAllEmployee()
         {
             string query = "SELECT " +
-                                "employee.NTUser, employee.Name, employee.Address, employee.HireDate, employee.Birthday, deparment.Name as DepartmentName " +
+                                "employee.NTUser, employee.Name, employee.Address, employee.HireDate, employee.Birthday, department.Name as DepartmentName " +
                                 "FROM " +
                                 "`employee` " +
                                 "JOIN " +
                                 "department " +
                                 "WHERE " +
                                 "employee.Department = department.ID;";
-            return executeQueryToGetJson(query);
+            return executeQuery<string>(query);
         }
 
         public string getEmployeeById(int Id)
@@ -104,7 +134,7 @@ namespace JuKeMa.Data
                                 "WHERE " +
                                 $"employee.Department = department.ID WHERE employee.NTUser = {Id};";
 
-            return executeQueryToGetJson(query);
+            return executeQuery<string>(query);
         }
 
         public string getEmployeeByArray(string[] filter)
@@ -125,10 +155,10 @@ namespace JuKeMa.Data
             }
             query += $"employee.NTUser = {filter[filter.Length-1]};";
 
-            return executeQueryToGetJson(query);
+            return executeQuery<string>(query);
         }
 
-        public string getDataForCheckList()
+        public List<Employee> getDataForCheckList()
         {
             string query = "SELECT " +
                             "employee.NTUser, employee.Name, department.Name as DepartmentName " +
@@ -138,7 +168,7 @@ namespace JuKeMa.Data
                             "department " +
                             "WHERE " +
                             "employee.Department = department.ID;";
-            return executeQueryToGetJson(query);
+            return executeQuery<List<Employee>>(query);
         }
     }
 }
