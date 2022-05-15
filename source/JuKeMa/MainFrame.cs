@@ -47,20 +47,32 @@ namespace JuKeMa
         private void ListBox_SelectedIndexChanged(object sender, ItemCheckEventArgs e)
         {
             this.JsonView.Clear();
-            if (ListBox.GetItemChecked(0))
+            if (e.Index == 0)
             {
-                this.allSelected = true;
-            } else {
-                this.allSelected = false;
-            }
-
-            if (this.allSelected)
-            {
-                for (int index = 0; index < this.checkedBoxes.Length; ++index)
+                if (e.NewValue == CheckState.Checked)
                 {
-                    this.checkedBoxes[index] = true;
+                    this.allSelected = true;
+                    for (int index = 0; index < this.checkedBoxes.Length; ++index)
+                    {
+                        this.checkedBoxes[index] = true;
+                        ListBox.SetItemChecked(index+1, true);
+                    }
+                } else
+                {
+                    this.allSelected = false;
+                    for (int index = 0; index < this.checkedBoxes.Length; ++index)
+                    {
+                        this.checkedBoxes[index] = true;
+                        ListBox.SetItemChecked(index+1, false);
+                    }
                 }
-            } else {
+
+            } else if (this.checkedBoxes.All(x => true) && e.NewValue == CheckState.Unchecked)
+            {
+                this.allSelected = false;
+                ListBox.SetItemChecked(0, false);
+            } else 
+            { 
                 for (int cnt = 0; cnt < this.checkedBoxes.Length; ++cnt)
                 {
                     if (ListBox.GetItemChecked(cnt))
@@ -74,7 +86,7 @@ namespace JuKeMa
                 }
                 if (e.NewValue == CheckState.Checked)
                 {
-                    this.checkedBoxes[e.Index - 1] = true;
+                    this.checkedBoxes[e.Index] = true;
                 }
             }
 
