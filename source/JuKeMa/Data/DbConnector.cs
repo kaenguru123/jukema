@@ -140,7 +140,7 @@ namespace JuKeMa.Data
             return executeQuery<string>(query);
         }
 
-        public string getEmployeeByArray(string[] filter)
+        public string getEmployeeByList(List<string> filter)
         {
             string query = "SELECT " +
                                     "employee.NTUser, employee.Name, employee.Address, employee.HireDate, employee.Birthday, department.Name as DepartmentName " +
@@ -152,11 +152,11 @@ namespace JuKeMa.Data
                                     "employee.Department = department.ID " +
                                     "WHERE ";
 
-            for (int i = 0; i < filter.Length-1; i++)
+            for (int i = 0; i < filter.Count-1; i++)
             {
-                    query += $"employee.NTUser = {filter[i]} OR ";
+                    query += $"employee.NTUser = '{filter[i]}' OR ";
             }
-            query += $"employee.NTUser = {filter[filter.Length-1]};";
+            query += $"employee.NTUser = '{filter[filter.Count-1]}';";
 
             return executeQuery<string>(query);
         }
