@@ -31,7 +31,13 @@ namespace JuKeMa
 
         private void SaveJson_Click(object sender, EventArgs e)
         {
-            var employeeJSON = data.getAllEmployee();
+            if (this.checkedEmployees.Count == 0)
+            {
+                MessageBox.Show("Please select an employee", "No employees selected!",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Information);
+                return;
+            }
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "JSON|*.json | Text|*.txt";
             saveFileDialog.Title = "Choose output directory";
@@ -39,9 +45,8 @@ namespace JuKeMa
 
             if (saveFileDialog.FileName != "")
             {
-                File.WriteAllText(saveFileDialog.FileName, employeeJSON);
+                File.WriteAllText(saveFileDialog.FileName, this.JsonView.Text);
             }
-            Console.WriteLine(employeeJSON);
         }
 
         private string extractNtUserFromItem(string item)
