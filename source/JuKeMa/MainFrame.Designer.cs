@@ -86,8 +86,11 @@ namespace JuKeMa
             // MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            var windowSize = this.AutoScaleDimensions.ToSize();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1009, 606);
+            this.ClientSize = new System.Drawing.Size(1050, 650);
+            this.MinimumSize = new System.Drawing.Size(1050, 650);
+            this.MaximumSize = new System.Drawing.Size(1050, 650);
             this.Controls.Add(this.Logo);
             this.Controls.Add(this.ListBox);
             this.Controls.Add(this.JsonView);

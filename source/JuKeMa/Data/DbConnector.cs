@@ -3,10 +3,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace JuKeMa.Data
 {
@@ -16,14 +13,24 @@ namespace JuKeMa.Data
         private MySqlCommand command { get; set; }
         public DbConnector()
         {
-            string ConnectionString = "server=localhost;database=jukema;userid=root;";
-            Connection = new MySqlConnection();
-            Connection.ConnectionString = ConnectionString;
+            try
+            {
+                string ConnectionString = "server=localhost;database=jukema;userid=root;";
+                Connection = new MySqlConnection();
+                Connection.ConnectionString = ConnectionString;
+            
+                command = new MySqlCommand();
+                command.Connection = Connection;
 
-            command = new MySqlCommand();
-            command.Connection = Connection;
-
-            Connection.Open();
+                Connection.Open();
+            }
+            catch (MySqlException err)
+            {
+                MessageBox.Show(err.Message, "ERROR! Connection to database failed!",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Error);
+                Environment.Exit(-1);
+            }
         }
 
         ~DbConnector()
@@ -67,25 +74,6 @@ namespace JuKeMa.Data
             }
             return list;
         }
-
-        //private string executeQueryToGetJson(string query)
-        //{
-        //    command.CommandText = query; 
-        //    var data = command.ExecuteReader();
-        //    var employees = new List<Employee>();
-        //    employees = initializeList(data);
-        //    return JsonConvert.SerializeObject(employees, Formatting.Indented, new JsonSerializerSettings
-        //    {
-        //        DefaultValueHandling = DefaultValueHandling.Ignore
-        //    });
-        //}
-        //private List<Employee> executeQueryToGetList(string query)
-        //{
-        //    command.CommandText = query;
-        //    var data = command.ExecuteReader();
-        //    var employees = new List<Employee>();
-        //    return initializeList(data);
-        //}
 
 
         private T executeQuery<T>(string query)
