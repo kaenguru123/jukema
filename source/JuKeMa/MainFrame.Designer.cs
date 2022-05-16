@@ -46,7 +46,7 @@ namespace JuKeMa
             this.SaveJson.TabIndex = 0;
             this.SaveJson.Text = "Save Json";
             this.SaveJson.UseVisualStyleBackColor = true;
-            this.SaveJson.Click += new System.EventHandler(this.SaveJson_Click);
+            this.SaveJson.Click += new System.EventHandler(this.saveJson_Click);
             // 
             // JsonView
             // 
@@ -63,9 +63,9 @@ namespace JuKeMa
             // ListBox
             // 
             this.ListBox.FormattingEnabled = true;
-            this.employees = data.getDataForCheckList();
+            this.Employees = Data.getDataForCheckList();
             this.ListBox.Items.Add("select all");
-            foreach (var employee in this.employees)
+            foreach (var employee in this.Employees)
             {
                 this.ListBox.Items.Add($"{employee.NTUser}\t  {employee.Name}\t({employee.Department})");
             }
@@ -73,7 +73,7 @@ namespace JuKeMa
             this.ListBox.Name = "ListBox";
             this.ListBox.Size = new System.Drawing.Size(426, 202);
             this.ListBox.TabIndex = 3;
-            this.ListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ListBox_SelectedIndexChanged);
+            this.ListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.listBox_SelectedIndexChanged);
             // 
             // Logo
             // 

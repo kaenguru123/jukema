@@ -10,7 +10,7 @@ namespace JuKeMa.Data
     class DbConnector
     {
         private MySqlConnection Connection { get; set; }
-        private MySqlCommand command { get; set; }
+        private MySqlCommand Command { get; set; }
         public DbConnector()
         {
             try
@@ -19,8 +19,8 @@ namespace JuKeMa.Data
                 Connection = new MySqlConnection();
                 Connection.ConnectionString = ConnectionString;
             
-                command = new MySqlCommand();
-                command.Connection = Connection;
+                Command = new MySqlCommand();
+                Command.Connection = Connection;
 
                 Connection.Open();
             }
@@ -78,8 +78,8 @@ namespace JuKeMa.Data
 
         private T executeQuery<T>(string query)
         {
-            command.CommandText = query;
-            var data = command.ExecuteReader();
+            Command.CommandText = query;
+            var data = Command.ExecuteReader();
             var employees = new List<Employee>();
             employees = initializeList(data);
             data.Close();
@@ -96,36 +96,6 @@ namespace JuKeMa.Data
                 return (T)(object)employees;
             }
             return (T)(object)null;
-        }
-
-       
-        public string getAllEmployee()
-        {
-            string query = "SELECT " +
-                                "employee.NTUser, employee.Name, employee.Address, employee.HireDate, employee.Birthday, department.Name as DepartmentName " +
-                                "FROM " +
-                                "`employee` " +
-                                "JOIN " +
-                                "department " +
-                                "ON " +
-                                "employee.Department = department.ID;";
-            return executeQuery<string>(query);
-        }
-
-        public string getEmployeeById(string Id)
-        {
-            string query = "SELECT " +
-                                "employee.NTUser, employee.Name, employee.Address, employee.HireDate, employee.Birthday, department.Name as DepartmentName " +
-                                "FROM " +
-                                "`employee` " +
-                                "JOIN " +
-                                "department " +
-                                "ON " +
-                                $"employee.Department = department.ID " +
-                                "WHERE " +
-                                $"employee.NTUser = '{Id}';";
-
-            return executeQuery<string>(query);
         }
 
         public string getEmployeeByList(List<string> filter)

@@ -10,21 +10,21 @@ namespace JuKeMa
 {
     public partial class MainFrame : Form
     {
-        private DbConnector data { get; set; }
-        private List<string> checkedEmployees { get; set; }
-        private List<Employee> employees { get; set; }
-        private bool blockLoading { get; set; }
+        private DbConnector Data { get; set; }
+        private List<string> CheckedEmployees { get; set; }
+        private List<Employee> Employees { get; set; }
+        private bool BlockLoading { get; set; }
 
         public MainFrame()
         {
-            data = new DbConnector();
+            Data = new DbConnector();
             InitializeComponent();
-            checkedEmployees = new List<string>();
+            CheckedEmployees = new List<string>();
         }
 
-        private void SaveJson_Click(object sender, EventArgs e)
+        private void saveJson_Click(object sender, EventArgs e)
         {
-            if (this.checkedEmployees.Count == 0)
+            if (this.CheckedEmployees.Count == 0)
             {
                 MessageBox.Show("Please select an employee", "No employees selected!",
                                  MessageBoxButtons.OK,
@@ -52,43 +52,43 @@ namespace JuKeMa
             return ntuser;
         }
 
-        private void ListBox_SelectedIndexChanged(object sender, ItemCheckEventArgs e)
+        private void listBox_SelectedIndexChanged(object sender, ItemCheckEventArgs e)
         {
             this.JsonView.Clear();
             var checkedItem = ListBox.Items[e.Index].ToString();
 
             if (e.Index == 0 && e.NewValue == CheckState.Checked)
             {
-                this.blockLoading = true;
+                this.BlockLoading = true;
                 for (int i = 1; i < ListBox.Items.Count; ++i)
                 {
                     ListBox.SetItemChecked(i, true);
                 }
-                this.blockLoading = false;
+                this.BlockLoading = false;
             } 
-            else if (e.Index == 0 && e.NewValue == CheckState.Unchecked && this.checkedEmployees.Count == this.employees.Count)
+            else if (e.Index == 0 && e.NewValue == CheckState.Unchecked && this.CheckedEmployees.Count == this.Employees.Count)
             {
-                this.blockLoading = true;
+                this.BlockLoading = true;
                 for (int i = 1; i < ListBox.Items.Count; ++i)
                 {
                     ListBox.SetItemChecked(i, false);
                 }
-                this.blockLoading = false;
+                this.BlockLoading = false;
             } 
             
             if (e.Index != 0 && e.NewValue == CheckState.Checked)
             {
-                this.checkedEmployees.Add(extractNtUserFromItem(checkedItem));
+                this.CheckedEmployees.Add(extractNtUserFromItem(checkedItem));
             } 
             else if (e.Index != 0 && e.NewValue == CheckState.Unchecked)
             {
-                var toRemove = this.checkedEmployees.FirstOrDefault(x => x.Equals(extractNtUserFromItem(checkedItem)));
-                this.checkedEmployees.Remove(toRemove);
+                var toRemove = this.CheckedEmployees.FirstOrDefault(x => x.Equals(extractNtUserFromItem(checkedItem)));
+                this.CheckedEmployees.Remove(toRemove);
                 ListBox.SetItemChecked(0, false);
             }
-            if (!blockLoading)
+            if (!BlockLoading)
             {
-                this.JsonView.Text = this.checkedEmployees.Count == 0 ? "" : data.getEmployeeByList(this.checkedEmployees);
+                this.JsonView.Text = this.CheckedEmployees.Count == 0 ? "" : Data.getEmployeeByList(this.CheckedEmployees);
             }
         }
     }
