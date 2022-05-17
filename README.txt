@@ -21,5 +21,8 @@ In der zip sollten neben diesem README folgende Dateien zu finden sein:
 
 Falls Dateien fehlen oder Fragen aufkommen, wenden Sie sich bitte an uns.
 
+Außerdem ist unser Projekt auch auf GitHub zu finden unter:
+https://github.com/kaenguru123/jukema
+
 Viele Grüße
 Team JuKeMa ;)
