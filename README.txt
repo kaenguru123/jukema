@@ -21,6 +21,9 @@ In der zip sollten neben diesem README folgende Dateien zu finden sein:
 
 Falls Dateien fehlen oder Fragen aufkommen, wenden Sie sich bitte an uns.
 
+In der "ProjektDoku_Umzug.docx" finden sie unter "Inbetriebname" alle nötigen Schritte, 
+damit das Projekt auf ihrem Gerät einwandfrei läuft.
+
 Außerdem ist unser Projekt auch auf GitHub zu finden unter:
 https://github.com/kaenguru123/jukema
 
